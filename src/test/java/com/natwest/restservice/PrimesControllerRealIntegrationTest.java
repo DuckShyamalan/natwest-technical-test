@@ -38,6 +38,14 @@ class PrimesControllerRealIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.initial").value(10))
                 .andExpect(jsonPath("$.primes").value(Matchers.containsInAnyOrder(listJson.toArray())));
+
+        // test that caching is occurring - doesn't seem legit though
+        for (int i = 0; i < 2; i++) {
+            long startTime = System.nanoTime();
+            this.mockMvc.perform(get("/primes/1010000")).andDo(print());
+            long now = System.nanoTime();
+            System.out.println((now - startTime) + " nanoseconds: " + i);
+        }
     }
 
     @Test

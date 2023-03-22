@@ -12,6 +12,11 @@ The REST call would look something like http://your.host.com/primes/10 and shoul
 }
 ```
 
+### TODO:
+* Consider supporting varying return content types such as XML based, that should be configurable using the requested media type. 
+* Consider ways to improve overall performance e.g. caching results, concurrent algorithm 
+* Consider supporting multiple algorithms that can be switched based on optional parameters
+
 ## Requirements
 * The project must be written in Java 8 or above.
 * The project must use Maven OR Gradle to build, test and run.

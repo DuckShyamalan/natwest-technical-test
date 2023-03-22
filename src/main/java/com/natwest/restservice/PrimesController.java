@@ -1,7 +1,9 @@
 package com.natwest.restservice;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -12,7 +14,9 @@ import java.util.List;
 public class PrimesController {
 
     @GetMapping("/primes/{initial}")
-    public Primes getPrimes(@PathVariable("initial") int initial) {
+    @Cacheable("primes")
+    public Primes getPrimes(@PathVariable("initial") int initial//, //maybe sth like below to provide options
+                            /*@RequestParam("xml") boolean inXML*/) {
         boolean[] arePrimes = new boolean[initial+1];
         Arrays.fill(arePrimes, true);
 
