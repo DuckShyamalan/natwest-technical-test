@@ -12,12 +12,22 @@ class PrimesControllerTest {
     PrimesController controller;
 
     @Test
-    void getsTheCorrectPrimes() {
+    void getsTheCorrectPrimesUsingSieveOfEratosthenes() {
         int initial0 = 10;
         int[] expected0 = {2, 3, 5, 7};
         int initial1 = 11; // to show the method calculates primes upto and including the initial range
         int[] expected1 = {2, 3, 5, 7, 11};
-        Assertions.assertArrayEquals(expected0, controller.getPrimes(initial0).primes().stream().mapToInt(i -> i).toArray());
-        Assertions.assertArrayEquals(expected1, controller.getPrimes(initial1).primes().stream().mapToInt(i -> i).toArray());
+        Assertions.assertArrayEquals(expected0, controller.getPrimes(initial0, "sieve").primes().stream().mapToInt(i -> i).toArray());
+        Assertions.assertArrayEquals(expected1, controller.getPrimes(initial1, "sieve").primes().stream().mapToInt(i -> i).toArray());
+    }
+
+    @Test
+    void getsTheCorrectPrimesBruteForce() {
+        int initial0 = 10;
+        int[] expected0 = {2, 3, 5, 7};
+        int initial1 = 11; // to show the method calculates primes upto and including the initial range
+        int[] expected1 = {2, 3, 5, 7, 11};
+        Assertions.assertArrayEquals(expected0, controller.getPrimes(initial0, "bruteforce").primes().stream().mapToInt(i -> i).toArray());
+        Assertions.assertArrayEquals(expected1, controller.getPrimes(initial1, "bruteforce").primes().stream().mapToInt(i -> i).toArray());
     }
 }

@@ -34,12 +34,22 @@ class PrimesControllerRealIntegrationTest {
 
         JSONArray listJson = (JSONArray) jsonParser.parse(objectMapper.writeValueAsString(expectedPrimes));
 
-        this.mockMvc.perform(get("/primes/10")).andDo(print())
+        //test Sieve of Eratosthenes method for finding primes
+        this.mockMvc.perform(get("/primes/10?algorithm=sieve")).andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.initial").value(10))
                 .andExpect(jsonPath("$.primes").value(Matchers.containsInAnyOrder(listJson.toArray())));
 
-        // test that caching is occurring - doesn't seem legit though
+        //test brute force algorithm for finding primes
+        this.mockMvc.perform(get("/primes/10?algorithm=bruteforce")).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.initial").value(10))
+                .andExpect(jsonPath("$.primes").value(Matchers.containsInAnyOrder(listJson.toArray())));
+    }
+
+    @Test
+    void measureImprovementFromCaching() throws Exception {
+        // test that caching is occurring - investigate how to improve testing
         for (int i = 0; i < 2; i++) {
             long startTime = System.nanoTime();
             this.mockMvc.perform(get("/primes/1010000")).andDo(print());
