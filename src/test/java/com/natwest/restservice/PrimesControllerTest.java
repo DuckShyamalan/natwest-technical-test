@@ -30,4 +30,11 @@ class PrimesControllerTest {
         Assertions.assertArrayEquals(expected0, controller.getPrimes(initial0, "bruteforce").primes().stream().mapToInt(i -> i).toArray());
         Assertions.assertArrayEquals(expected1, controller.getPrimes(initial1, "bruteforce").primes().stream().mapToInt(i -> i).toArray());
     }
+
+    @Test
+    void xmlMethodGetsTheResult() {
+        int initial0 = 10;
+        int[] expected0 = {2, 3, 5, 7};
+        Assertions.assertArrayEquals(expected0, controller.getPrimesWithXml(initial0, "sieve").primes().stream().mapToInt(i -> i).toArray());
+    }
 }

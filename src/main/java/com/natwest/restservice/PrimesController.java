@@ -1,12 +1,12 @@
 package com.natwest.restservice;
 
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,11 +14,17 @@ import java.util.List;
 @RestController
 public class PrimesController {
 
-    @GetMapping("/primes/{initial}")
+    @GetMapping(value = "/primes/{initial}/xml",
+            produces = { MediaType.APPLICATION_XML_VALUE, MediaType.TEXT_XML_VALUE })
+    public Primes getPrimesWithXml(@PathVariable("initial") int initial,
+                            @RequestParam(value = "algorithm", defaultValue = "sieve") String algorithm) {
+        return getPrimes(initial, algorithm);
+    }
+
+    @GetMapping(value = "/primes/{initial}", produces = { MediaType.APPLICATION_JSON_VALUE })
     @Cacheable("primes")
     public Primes getPrimes(@PathVariable("initial") int initial,
-                            @RequestParam(value = "algorithm", defaultValue = "sieve") String algorithm
-                            /*@RequestParam(value = "xml", defaultValue = "false") boolean inXML*/) {
+                            @RequestParam(value = "algorithm", defaultValue = "sieve") String algorithm) {
         List<Integer> primes = new LinkedList<>();
         if (algorithm.equals("sieve")) { // Sieve of Eratosthenes
             System.out.println("Calculating primes based on the Sieve of Eratosthenes Method");

@@ -12,6 +12,12 @@ The REST call would look something like http://your.host.com/primes/10 and shoul
 }
 ```
 
+## Usage
+* Run the JAR / Run the RESTful service via the main method in RestServiceApplication.java
+* The only currently existing call is of the format: http://your.host.com/primes/{number} to which the following can be appended:
+  * "algorithm" **(as a query parameter)** - is set to "sieve" by default, referring to the Sieve of Eratosthenes method of calculating primes. If some other value is set, it performs a brute force algorithm to find the relevant primes. The algorithm chosen will be displayed in the build log.
+  * "xml" **(as a path variable)** - ie, primes/10/xml. If used, the result will be returned in an XML format as opposed to JSON. It also supports the "algorithm" query parameter. 
+
 ### TODO:
 * Consider supporting varying return content types such as XML based, that should be configurable using the requested media type.
 

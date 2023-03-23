@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.xpath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -23,10 +24,10 @@ class PrimesControllerRealIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
+    int[] expectedPrimes = {2, 3, 5, 7};
+
     @Test
     void returnPrimesUptoAGivenNumber() throws Exception {
-        int[] expectedPrimes = {2, 3, 5, 7};
-
         // getting java.lang.AssertionError: Got a list of values [2,3,5,7] instead of the expected single value [2,3,5,7]
         // if we don't use JSONArray -> Array
         JSONParser jsonParser= new JSONParser(JSONParser.DEFAULT_PERMISSIVE_MODE);
@@ -45,6 +46,14 @@ class PrimesControllerRealIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.initial").value(10))
                 .andExpect(jsonPath("$.primes").value(Matchers.containsInAnyOrder(listJson.toArray())));
+    }
+
+    @Test
+    void returnPrimesAsXML() throws Exception {
+        this.mockMvc.perform(get("/primes/10/xml?algorithm=sieve")).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(xpath("/Primes/initial").number(10.0))
+                .andExpect(xpath("/Primes//primes/primes").nodeCount(4)); //test that all 4 primes until 10 are present
     }
 
     @Test
